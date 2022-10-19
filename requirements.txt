@@ -1,0 +1,9 @@
+Django==3.2.16
+dj-database-url==0.5.0
+gunicorn==20.1.0
+whitenoise==6.2.0
+
+# dev and test
+black==22.3.0
+flake8==4.0.1
+isort==5.10.1
