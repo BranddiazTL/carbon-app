@@ -41,7 +41,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "drf_spectacular",
 ]
+
+# Carbon apps
+INSTALLED_APPS += (
+    "carbon.apps.base",
+    "carbon.apps.customers",
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,6 +80,23 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# DRF Spectacular Settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Carbon API",
+    "DESCRIPTION": "Carbon Emissions Calculator for a better live",
+    "VERSION": "1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
 WSGI_APPLICATION = "carbon.wsgi.application"
 
 
@@ -84,7 +109,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 # We update the database configuration if the DATABASE_URL is present
 DATABASE_URL = os.environ.get("DATABASE_URL")
 db_from_env = dj_database_url.config(
