@@ -30,12 +30,14 @@ from rest_framework import routers
 # Carbon Stuff
 from carbon.apps.base import views as base_views
 from carbon.apps.customers import views
+from carbon.apps.transport.views import TransportViewSet
 
 handler500 = base_views.server_error
 
 # Carbon API routes
 router = routers.DefaultRouter()
 router.register(r"api/customers", views.CustomerViewSet)
+router.register(r"api/transport", TransportViewSet, basename="transport")
 
 # Wire up our API using automatic URL routing.
 

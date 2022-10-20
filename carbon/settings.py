@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += (
     "carbon.apps.base",
     "carbon.apps.customers",
+    "carbon.apps.transport",
 )
 
 MIDDLEWARE = [
@@ -162,3 +163,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # whitenoise settings
 STATIC_ROOT = BASE_DIR / "staticfiles"  # root directory of the static files
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+# Carbon Variables
+SYSTEM_GOOGLE_API_HOST = "https://maps.googleapis.com"
+SYSTEM_GOOGLE_API_ENDPOINT_NAME_ROUTE_MAP = {
+    "MAPS_API_DIRECTIONS": "/maps/api/directions/json",
+}
+SYSTEM_GOOGLE_API_KEY = os.environ.get("SYSTEM_GOOGLE_API_KEY")
