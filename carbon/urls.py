@@ -26,6 +26,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework import routers
+from rest_framework.authtoken import views as auth_views
 
 # Carbon Stuff
 from carbon.apps.base import views as base_views
@@ -43,6 +44,7 @@ router.register(r"api/transport", TransportViewSet, basename="transport")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/auth/", auth_views.obtain_auth_token),
     path("", include(router.urls)),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
