@@ -6,6 +6,8 @@
       <a>About The Project</a>
       <ul>
         <li><a>Built With</a></li>
+        <li><a>Dependencies</a></li>
+        <li><a>CI/CD</a></li>
       </ul>
     </li>
     <li>
@@ -38,7 +40,7 @@ Note: For more information on how to use it go to the Usage part of the file.
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This project was build using:
 
 * Python
 * Django
@@ -47,6 +49,42 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * Docker
 * Heroku
 * Gitlab
+
+### Dependencies
+
+* ***Django==3.2.16***: As it is a Django project we need the Django framework
+* ***dj-database-url==0.5.0***: Dependency use to connect and handle the Postgrest database integration
+* ***djangorestframework==3.14.0***: Django framework to handle Rest APIs requests
+* ***drf-spectacular==0.24.2***: An spectacular library to handle OpenApi integration and UI including Swagger
+* ***gunicorn==20.1.0***: That handles running the service
+* ***Pillow==9.2.0***: Python Imaging Library that adds image processing capabilities
+* ***requests==2.28.1***: Allows you to send HTTP/1.1 requests extremely easily
+* ***whitenoise==6.2.0***: Allows your the app to serve its own static files, making it a self-contained unit that can be deployed anywhere
+* ***tenacity==8.1.0***: Allows you to retry HTTP requests if there is any issue
+* ***black==22.3.0***: Code formatter that allows you to have a standard look of all the code
+* ***flake8==4.0.1***: Uses pep8 for checking style. pyflakes for checking syntax. mccabe for checking complexity
+* ***isort==5.10.1***: A Python utility / library to sort imports alphabetically, and automatically separated into sections and by type
+
+Note: All the dependencies are in the requirements.txt file and is explained how to install all of them on the Installation part of the file.
+
+### CI/CD
+
+The project has a CI/CD pipeline using Gitlab that when you `push` the code it:
+
+* ***build***:
+  * Build the Docker image and use Docker cache to avoid re-building not changed steps.
+  * Push the Docker image
+  
+* ***test***:
+  * Runs the Django test with manage.py
+  * Checks flake8 compliance
+  * Checks black compliance
+  * Checks isort compliance
+  
+  Note: If any of this checks fails the app is not deployed
+  
+* ***deploy***:
+  * Deploys the image to Heroku
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -72,7 +110,7 @@ Before any configuration, we need to clone the project:
 
 #####  Run the project locally
 
-With the project clone and on the main directory ./carbon-app, we:
+With the project cloned and on the main directory ./carbon-app, we:
  * Install all libraries
       ```sh
       pip install -r requirements.txt
@@ -175,7 +213,7 @@ To Login to the API we need to use the following endpoint:
             "password": "123456789Bb"
           }
       ```
-        This is a valid user that can be used to test the app.
+        This is a valid user that can be use to test the app.
         
     * We need to send the token returned on the request in a `Authorization` header in each endpoint request like this:
       ```sh
@@ -219,6 +257,7 @@ The project has one main API endpoint:
 6. A way for the user mark what Transport he decided at the end, to have persistency of the Carbon Emissions history of the user
 7. Getting the User City + Region from the location of the device
 8. A signal / event implementation to handle the creation of the customer automatically when a user is created
-9. ...
+9. Add a two factor authenticator for the Admin page
+10. App, API and Admin different URLs, including one URL for each environment. Ex. admin.dev.company_name.com / api.dev.company_name.com
   
 
