@@ -18,6 +18,27 @@ class TransportViewSet(viewsets.ViewSet):
     authentication_classes = (TokenAuthentication,)
 
     def list(self, request):
+        """
+        Returns a JSON response object with the Distance,
+        Duration and Emissions between origin and destination
+
+        origin: str
+            the origin location of the user
+        destination: str
+            the destination location of the user
+        transport-mode: {'driving', 'walking', 'cycling', 'transit', 'all'}
+            the mode of transport that the user will use
+        :return: JSON response
+                with the calculated data for Distance,
+                Duration and Emissions and the mode of transport
+
+        Notes:
+            if 'home' or 'work' are send as the origin/destination,
+            the customer home/work address is used as the location
+
+            if 'all' is send as the transport-mode, all different
+            transport mode data will be returned at the same time
+        """
         origin = request.query_params.get("origin")
         destination = request.query_params.get("destination")
         mode = request.query_params.get("transport-mode")
@@ -42,16 +63,19 @@ class TransportViewSet(viewsets.ViewSet):
         origin = origin.lower()
         destination = destination.lower()
 
+        # we only let authenticated user use the 'home' and 'work' as origin/destination
         if request.user.is_authenticated:
             user = request.user
             customer = Customer.objects.filter(user=user).values().first()
 
+            # if the user doesnt have a associated customer we return
             if not customer:
                 return Response(
                     "User not associated with any Customer",
                     status=422,
                 )
 
+            # if the customer didnt set a work address the work param value cannot be used
             if any([origin == "work", destination == "work"]) and not customer.get(
                 "work_address"
             ):
@@ -66,9 +90,12 @@ class TransportViewSet(viewsets.ViewSet):
             if destination in user_addresses:
                 destination = customer.get(f"{destination}_address").upper()
 
+        # if the transport mode value is all, we return a response
+        # with all the transport modes information
         if mode == "all":
             transports = {}
 
+            # we loop through all the valid transport modes
             for transport_mode in GoogleMapsDirectionsMode:
                 transports.update(
                     {

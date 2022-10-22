@@ -7,6 +7,8 @@ class TransportSerializer(serializers.Serializer):
     emissions = serializers.CharField(max_length=256)
     mode = serializers.CharField(max_length=256)
 
+    # we change the endpoint response body (representation) to generate the data
+    # inside a transport_mode object
     def to_representation(self, instance):
         representation = super(TransportSerializer, self).to_representation(instance)
 

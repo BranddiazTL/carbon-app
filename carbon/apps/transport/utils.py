@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .emissions import get_transport_carbon_emissions
 from .helpers.system.google import (
     GoogleMapsCity,
@@ -7,12 +8,31 @@ from .helpers.system.google import (
 
 
 class Transport(object):
+    """
+    Transport object to set all the transport information that we need for the response
+    """
+
     def __init__(self, **kwargs):
         for field in ("distance", "duration", "emissions", "mode"):
             setattr(self, field, kwargs.get(field, None))
 
 
-def get_distance_and_time(origin, destination, mode):
+def get_distance_and_time(
+    origin: str, destination: str, mode: GoogleMapsDirectionsMode
+) -> Transport:
+    """
+    Returns a Transport object with the calculated data for the Distance, Duration,
+    and emissions of the travel between the origin and the destination of the user
+
+    :param origin: str
+            the origin location of the user
+    :param destination: str
+            the destination location of the user
+    :param mode: {'driving', 'walking', 'cycling', 'transit'}
+            the mode of transport that the user will use
+    :return: object
+            Transport object with the calculated data
+    """
     directions = get_google_maps_directions(
         origin, destination, GoogleMapsCity.CHICAGO.value, mode
     )
